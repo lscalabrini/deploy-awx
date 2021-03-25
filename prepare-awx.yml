@@ -4,8 +4,11 @@
   tasks: 
      - name: Deploy docker-compose
        yum: 
-          name: docker-compose
+          name: 
+              - docker-compose
+              - vim
           state: present
+
      - name: Configure Docker Repo
        yum_repository:
            baseurl: http://download.docker.com/linux/centos/7/x86_64/stable/ 
@@ -35,6 +38,11 @@
              key: https://www.centos.org/keys/RPM-GPG-KEY-CentOS-7
              state: present
 
+     - name: Rpm key docker
+       rpm_key: 
+             key: https://download.docker.com/linux/centos/gpg
+             state: present 
+
      - name: Deploy Docker CE
        yum:  
          name: 
@@ -42,6 +50,8 @@
             - docker-ce-cli.x86_64
             - docker-ce-selinux.noarch
             - git
+            - vim
+            - libselinux-python3.x86_64
          state: present 
 
      - name: Start and enable docker
@@ -49,4 +59,23 @@
            name: docker
            state: started
            enabled: yes 
+      
+     - name: Download awx software
+       unarchive:
+         src: https://github.com/ansible/awx/archive/refs/tags/17.1.0.tar.gz
+         dest: ./ 
+         remote_src: yes       
+   
+     - name: Set Admin Password
+       lineinfile: 
+             regex: "^# admin_password"
+             path: /root/deploy-awx/awx-17.1.0/installer/inventory
+             line: "admin_password=password" 
+ 
+     - name: Go to the folder and execute command
+       command: "ansible-playbook -i inventory install.yml"
+       args:  
+         chdir: /root/deploy-awx/awx-17.1.0/installer
+
+
 
