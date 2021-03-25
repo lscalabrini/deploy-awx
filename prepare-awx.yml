@@ -1,0 +1,52 @@
+---
+- hosts: localhost
+
+  tasks: 
+     - name: Deploy docker-compose
+       yum: 
+          name: docker-compose
+          state: present
+     - name: Configure Docker Repo
+       yum_repository:
+           baseurl: http://download.docker.com/linux/centos/7/x86_64/stable/ 
+           enabled: yes
+           name: docker
+           description: docker-ce
+           state: present
+
+     - name: Configure Docker Repo
+       yum_repository:
+           baseurl: http://mirror.centos.org/centos/7/os/x86_64/
+           enabled: yes
+           name: centos
+           description: centos
+           state: present
+
+     - name: Configure Docker Repo
+       yum_repository:
+           baseurl: http://mirror.centos.org/centos/7/extras/x86_64/ 
+           enabled: yes
+           name: centos-extras
+           description: centos-extras
+           state: present
+
+     - name: Rpm key centos
+       rpm_key: 
+             key: https://www.centos.org/keys/RPM-GPG-KEY-CentOS-7
+             state: present
+
+     - name: Deploy Docker CE
+       yum:  
+         name: 
+            - docker-ce.x86_64
+            - docker-ce-cli.x86_64
+            - docker-ce-selinux.noarch
+            - git
+         state: present 
+
+     - name: Start and enable docker
+       service: 
+           name: docker
+           state: started
+           enabled: yes 
+
