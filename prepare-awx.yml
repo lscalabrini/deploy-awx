@@ -72,10 +72,3 @@
              path: /root/deploy-awx/awx-17.1.0/installer/inventory
              line: "admin_password=password" 
  
-     - name: Go to the folder and execute command
-       command: "ansible-playbook -i inventory install.yml"
-       args:  
-         chdir: /root/deploy-awx/awx-17.1.0/installer
-
-
-
