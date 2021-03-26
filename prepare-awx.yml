@@ -2,14 +2,13 @@
 - hosts: localhost
 
   tasks: 
-     - name: Deploy docker-compose
+     - name: Instala docker-compose
        yum: 
           name: 
               - docker-compose
-              - vim
           state: present
 
-     - name: Configure Docker Repo
+     - name: REPO Docker - Configurado
        yum_repository:
            baseurl: http://download.docker.com/linux/centos/7/x86_64/stable/ 
            enabled: yes
@@ -17,7 +16,7 @@
            description: docker-ce
            state: present
 
-     - name: Configure Docker Repo
+     - name: REPO Centos - Configurado
        yum_repository:
            baseurl: http://mirror.centos.org/centos/7/os/x86_64/
            enabled: yes
@@ -25,7 +24,7 @@
            description: centos
            state: present
 
-     - name: Configure Docker Repo
+     - name: REPO Centos Extras - Configurado
        yum_repository:
            baseurl: http://mirror.centos.org/centos/7/extras/x86_64/ 
            enabled: yes
@@ -33,17 +32,17 @@
            description: centos-extras
            state: present
 
-     - name: Rpm key centos
+     - name: RPM KEY CENTOS - Instalada
        rpm_key: 
              key: https://www.centos.org/keys/RPM-GPG-KEY-CentOS-7
              state: present
 
-     - name: Rpm key docker
+     - name: RPM KEY DOCKER - Instalada
        rpm_key: 
              key: https://download.docker.com/linux/centos/gpg
              state: present 
 
-     - name: Deploy Docker CE
+     - name: Docker - Instalado
        yum:  
          name: 
             - docker-ce.x86_64
@@ -54,19 +53,19 @@
             - libselinux-python3.x86_64
          state: present 
 
-     - name: Start and enable docker
+     - name: Docker - Iniciado
        service: 
            name: docker
            state: started
            enabled: yes 
       
-     - name: Download awx software
+     - name: AWX - Descarga 
        unarchive:
          src: https://github.com/ansible/awx/archive/refs/tags/17.1.0.tar.gz
          dest: ./ 
          remote_src: yes       
    
-     - name: Set Admin Password
+     - name: AWX - Admin Password configurado
        lineinfile: 
              regex: "^# admin_password"
              path: /root/deploy-awx/awx-17.1.0/installer/inventory
