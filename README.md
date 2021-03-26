@@ -3,7 +3,13 @@ Setup para deploy de AWX 17 en RHEL 7
 
 INSTALACIÓN:
 
+0) Instalar git 
+
+yum -y install git 
+
 1) CLONAR GIT REPO EN /root  * Importante: Si no utiliza /root, modificar ejecutame.sh
+
+git clone https://github.com/lscalabrini/deploy-awx
 
 2) EJECUTAR 
     ./ejecutame.sh
